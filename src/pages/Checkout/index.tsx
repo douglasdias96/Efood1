@@ -24,6 +24,7 @@ const Checkout = () => {
 
   const [compraValidada, setCompraValidada] = useState(false)
   const [continueToPay, setContinueToPay] = useState(false)
+  const [isFormValid, setIsFormValid] = useState(false)
 
   const closeCart = () => {
     dispatch(close())
@@ -137,6 +138,16 @@ const Checkout = () => {
   }
 
   useEffect(() => {
+    setIsFormValid(
+      form.values.receiver !== '' &&
+        form.values.address !== '' &&
+        form.values.city !== '' &&
+        form.values.cep !== '' &&
+        form.values.numberAddress !== ''
+    )
+  }, [form.values])
+
+  useEffect(() => {
     if (isSuccess) {
       dispatch(clearCart())
     }
@@ -241,7 +252,7 @@ const Checkout = () => {
                     <div>
                       <label htmlFor="cep">CEP</label>
                       <InputMask
-                        mask="999.999.999-99"
+                        mask="99999-999"
                         type="text"
                         id="cep"
                         name="cep"
@@ -280,6 +291,7 @@ const Checkout = () => {
                     type="button"
                     onClick={() => setContinueToPay(true)}
                     marginTop="24px"
+                    disabled={!isFormValid}
                   >
                     Continuar com o pagamento
                   </S.Button>
